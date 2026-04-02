@@ -161,7 +161,7 @@ class ShutdownClient(NamespacedClient):
         node_id: str,
         reason: t.Optional[str] = None,
         type: t.Optional[
-            t.Union[str, t.Literal["remove", "replace", "restart"]]
+            t.Literal["remove", "replace", "restart"]
         ] = None,
         allocation_delay: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,

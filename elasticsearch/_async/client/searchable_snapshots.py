@@ -90,9 +90,9 @@ class SearchableSnapshotsClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -179,7 +179,7 @@ class SearchableSnapshotsClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         renamed_index: t.Optional[str] = None,
         storage: t.Optional[
-            t.Union[str, t.Literal["full_copy", "shared_cache"]]
+            t.Literal["full_copy", "shared_cache"]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
@@ -272,7 +272,7 @@ class SearchableSnapshotsClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         level: t.Optional[
-            t.Union[str, t.Literal["cluster", "indices", "shards"]]
+            t.Literal["cluster", "indices", "shards"]
         ] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:

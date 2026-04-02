@@ -146,12 +146,12 @@ class NodesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         snapshots: t.Optional[int] = None,
         sort: t.Optional[
-            t.Union[str, t.Literal["block", "cpu", "gpu", "mem", "wait"]]
+            t.Literal["block", "cpu", "gpu", "mem", "wait"]
         ] = None,
         threads: t.Optional[int] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         type: t.Optional[
-            t.Union[str, t.Literal["block", "cpu", "gpu", "mem", "wait"]]
+            t.Literal["block", "cpu", "gpu", "mem", "wait"]
         ] = None,
     ) -> TextApiResponse:
         """
@@ -521,7 +521,7 @@ class NodesClient(NamespacedClient):
         human: t.Optional[bool] = None,
         include_segment_file_sizes: t.Optional[bool] = None,
         include_unloaded_segments: t.Optional[bool] = None,
-        level: t.Optional[t.Union[str, t.Literal["indices", "node", "shards"]]] = None,
+        level: t.Optional[t.Literal["indices", "node", "shards"]] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         types: t.Optional[t.Sequence[str]] = None,
@@ -639,9 +639,9 @@ class NodesClient(NamespacedClient):
         metric: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["_all", "aggregations", "rest_actions"]]
+                    t.Literal["_all", "aggregations", "rest_actions"]
                 ],
-                t.Union[str, t.Literal["_all", "aggregations", "rest_actions"]],
+                t.Literal["_all", "aggregations", "rest_actions"],
             ]
         ] = None,
         error_trace: t.Optional[bool] = None,

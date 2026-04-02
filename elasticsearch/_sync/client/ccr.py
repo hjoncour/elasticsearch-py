@@ -118,7 +118,7 @@ class CcrClient(NamespacedClient):
         read_poll_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         settings: t.Optional[t.Mapping[str, t.Any]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:

@@ -173,7 +173,7 @@ class TasksClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         group_by: t.Optional[
-            t.Union[str, t.Literal["nodes", "none", "parents"]]
+            t.Literal["nodes", "none", "parents"]
         ] = None,
         human: t.Optional[bool] = None,
         nodes: t.Optional[t.Union[str, t.Sequence[str]]] = None,

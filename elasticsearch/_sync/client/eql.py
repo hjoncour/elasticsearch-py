@@ -211,9 +211,9 @@ class EqlClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         fetch_size: t.Optional[int] = None,
@@ -231,7 +231,7 @@ class EqlClient(NamespacedClient):
         max_samples_per_key: t.Optional[int] = None,
         pretty: t.Optional[bool] = None,
         project_routing: t.Optional[str] = None,
-        result_position: t.Optional[t.Union[str, t.Literal["head", "tail"]]] = None,
+        result_position: t.Optional[t.Literal["head", "tail"]] = None,
         runtime_mappings: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         size: t.Optional[int] = None,
         tiebreaker_field: t.Optional[str] = None,

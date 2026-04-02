@@ -186,9 +186,9 @@ class SnapshotClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         feature_states: t.Optional[t.Sequence[str]] = None,
@@ -530,7 +530,7 @@ class SnapshotClient(NamespacedClient):
         index_names: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         offset: t.Optional[int] = None,
-        order: t.Optional[t.Union[str, t.Literal["asc", "desc"]]] = None,
+        order: t.Optional[t.Literal["asc", "desc"]] = None,
         pretty: t.Optional[bool] = None,
         size: t.Optional[int] = None,
         slm_policy_filter: t.Optional[str] = None,

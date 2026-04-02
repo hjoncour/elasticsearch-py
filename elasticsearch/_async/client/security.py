@@ -32,7 +32,7 @@ class SecurityClient(NamespacedClient):
         self,
         *,
         grant_type: t.Optional[
-            t.Union[str, t.Literal["access_token", "password"]]
+            t.Literal["access_token", "password"]
         ] = None,
         access_token: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
@@ -2373,7 +2373,7 @@ class SecurityClient(NamespacedClient):
         *,
         api_key: t.Optional[t.Mapping[str, t.Any]] = None,
         grant_type: t.Optional[
-            t.Union[str, t.Literal["access_token", "password"]]
+            t.Literal["access_token", "password"]
         ] = None,
         access_token: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,

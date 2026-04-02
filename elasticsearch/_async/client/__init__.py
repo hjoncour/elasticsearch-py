@@ -578,7 +578,7 @@ class AsyncElasticsearch(BaseClient):
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -892,15 +892,15 @@ class AsyncElasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1074,10 +1074,10 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -1253,10 +1253,10 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -1367,16 +1367,16 @@ class AsyncElasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        conflicts: t.Optional[t.Literal["abort", "proceed"]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1397,10 +1397,10 @@ class AsyncElasticsearch(BaseClient):
         scroll_size: t.Optional[int] = None,
         search_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         slice: t.Optional[t.Mapping[str, t.Any]] = None,
-        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
+        slices: t.Optional[t.Union[int, t.Literal["auto"]]] = None,
         sort: t.Optional[
             t.Union[
                 t.Sequence[t.Union[str, t.Mapping[str, t.Any]]],
@@ -1412,7 +1412,7 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[bool] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
@@ -1798,7 +1798,7 @@ class AsyncElasticsearch(BaseClient):
         stored_fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
     ) -> HeadApiResponse:
         """
@@ -1927,7 +1927,7 @@ class AsyncElasticsearch(BaseClient):
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
     ) -> HeadApiResponse:
         """
@@ -2022,7 +2022,7 @@ class AsyncElasticsearch(BaseClient):
         id: str,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2152,9 +2152,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2308,7 +2308,7 @@ class AsyncElasticsearch(BaseClient):
         stored_fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -2598,7 +2598,7 @@ class AsyncElasticsearch(BaseClient):
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -2766,7 +2766,7 @@ class AsyncElasticsearch(BaseClient):
         if_primary_term: t.Optional[int] = None,
         if_seq_no: t.Optional[int] = None,
         include_source_on_error: t.Optional[bool] = None,
-        op_type: t.Optional[t.Union[str, t.Literal["create", "index"]]] = None,
+        op_type: t.Optional[t.Literal["create", "index"]] = None,
         pipeline: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
@@ -2778,10 +2778,10 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -3177,9 +3177,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3195,7 +3195,7 @@ class AsyncElasticsearch(BaseClient):
         rest_total_hits_as_int: t.Optional[bool] = None,
         routing: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -3352,7 +3352,7 @@ class AsyncElasticsearch(BaseClient):
         project_routing: t.Optional[str] = None,
         rest_total_hits_as_int: t.Optional[bool] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -3466,7 +3466,7 @@ class AsyncElasticsearch(BaseClient):
         term_statistics: t.Optional[bool] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -3577,9 +3577,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3798,9 +3798,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3809,7 +3809,7 @@ class AsyncElasticsearch(BaseClient):
         metric: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -3894,7 +3894,7 @@ class AsyncElasticsearch(BaseClient):
         *,
         dest: t.Optional[t.Mapping[str, t.Any]] = None,
         source: t.Optional[t.Mapping[str, t.Any]] = None,
-        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
+        conflicts: t.Optional[t.Literal["abort", "proceed"]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
@@ -3905,10 +3905,10 @@ class AsyncElasticsearch(BaseClient):
         require_alias: t.Optional[bool] = None,
         script: t.Optional[t.Mapping[str, t.Any]] = None,
         scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
-        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
+        slices: t.Optional[t.Union[int, t.Literal["auto"]]] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
@@ -4065,7 +4065,7 @@ class AsyncElasticsearch(BaseClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         group_by: t.Optional[
-            t.Union[str, t.Literal["nodes", "none", "parents"]]
+            t.Literal["nodes", "none", "parents"]
         ] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
@@ -4405,16 +4405,16 @@ class AsyncElasticsearch(BaseClient):
         batched_reduce_size: t.Optional[int] = None,
         ccs_minimize_roundtrips: t.Optional[bool] = None,
         collapse: t.Optional[t.Mapping[str, t.Any]] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         docvalue_fields: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -4459,7 +4459,7 @@ class AsyncElasticsearch(BaseClient):
             t.Sequence[t.Union[None, bool, float, int, str]]
         ] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         seq_no_primary_term: t.Optional[bool] = None,
         size: t.Optional[int] = None,
@@ -4479,7 +4479,7 @@ class AsyncElasticsearch(BaseClient):
         suggest: t.Optional[t.Mapping[str, t.Any]] = None,
         suggest_field: t.Optional[str] = None,
         suggest_mode: t.Optional[
-            t.Union[str, t.Literal["always", "missing", "popular"]]
+            t.Literal["always", "missing", "popular"]
         ] = None,
         suggest_size: t.Optional[int] = None,
         suggest_text: t.Optional[str] = None,
@@ -4933,10 +4933,10 @@ class AsyncElasticsearch(BaseClient):
         extent: t.Optional[int] = None,
         fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        grid_agg: t.Optional[t.Union[str, t.Literal["geohex", "geotile"]]] = None,
+        grid_agg: t.Optional[t.Literal["geohex", "geotile"]] = None,
         grid_precision: t.Optional[int] = None,
         grid_type: t.Optional[
-            t.Union[str, t.Literal["centroid", "grid", "point"]]
+            t.Literal["centroid", "grid", "point"]
         ] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
@@ -5390,9 +5390,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -5497,9 +5497,9 @@ class AsyncElasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -5517,7 +5517,7 @@ class AsyncElasticsearch(BaseClient):
         routing: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         source: t.Optional[t.Union[str, t.Mapping[str, t.Any]]] = None,
         typed_keys: t.Optional[bool] = None,
@@ -5784,7 +5784,7 @@ class AsyncElasticsearch(BaseClient):
         term_statistics: t.Optional[bool] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union[str, t.Literal["external", "external_gte", "internal"]]
+            t.Literal["external", "external_gte", "internal"]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -5971,7 +5971,7 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         upsert: t.Optional[t.Mapping[str, t.Any]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -6116,16 +6116,16 @@ class AsyncElasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        conflicts: t.Optional[t.Literal["abort", "proceed"]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -6148,10 +6148,10 @@ class AsyncElasticsearch(BaseClient):
         scroll_size: t.Optional[int] = None,
         search_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         slice: t.Optional[t.Mapping[str, t.Any]] = None,
-        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
+        slices: t.Optional[t.Union[int, t.Literal["auto"]]] = None,
         sort: t.Optional[t.Sequence[str]] = None,
         stats: t.Optional[t.Sequence[str]] = None,
         terminate_after: t.Optional[int] = None,
@@ -6159,7 +6159,7 @@ class AsyncElasticsearch(BaseClient):
         version: t.Optional[bool] = None,
         version_type: t.Optional[bool] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,

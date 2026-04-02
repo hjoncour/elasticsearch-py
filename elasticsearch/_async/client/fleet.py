@@ -115,9 +115,9 @@ class FleetClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -130,7 +130,7 @@ class FleetClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         rest_total_hits_as_int: t.Optional[bool] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         typed_keys: t.Optional[bool] = None,
         wait_for_checkpoints: t.Optional[t.Sequence[int]] = None,
@@ -310,16 +310,16 @@ class FleetClient(NamespacedClient):
         batched_reduce_size: t.Optional[int] = None,
         ccs_minimize_roundtrips: t.Optional[bool] = None,
         collapse: t.Optional[t.Mapping[str, t.Any]] = None,
-        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
+        default_operator: t.Optional[t.Literal["and", "or"]] = None,
         df: t.Optional[str] = None,
         docvalue_fields: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -356,7 +356,7 @@ class FleetClient(NamespacedClient):
             t.Sequence[t.Union[None, bool, float, int, str]]
         ] = None,
         search_type: t.Optional[
-            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
+            t.Literal["dfs_query_then_fetch", "query_then_fetch"]
         ] = None,
         seq_no_primary_term: t.Optional[bool] = None,
         size: t.Optional[int] = None,
@@ -375,7 +375,7 @@ class FleetClient(NamespacedClient):
         suggest: t.Optional[t.Mapping[str, t.Any]] = None,
         suggest_field: t.Optional[str] = None,
         suggest_mode: t.Optional[
-            t.Union[str, t.Literal["always", "missing", "popular"]]
+            t.Literal["always", "missing", "popular"]
         ] = None,
         suggest_size: t.Optional[int] = None,
         suggest_text: t.Optional[str] = None,

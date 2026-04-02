@@ -596,7 +596,7 @@ class IngestClient(NamespacedClient):
         description: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         field_access_pattern: t.Optional[
-            t.Union[str, t.Literal["classic", "flexible"]]
+            t.Literal["classic", "flexible"]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,

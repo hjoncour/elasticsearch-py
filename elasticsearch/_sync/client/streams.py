@@ -36,7 +36,7 @@ class StreamsClient(NamespacedClient):
     def logs_disable(
         self,
         *,
-        name: t.Union[str, t.Literal["logs", "logs.ecs", "logs.otel"]],
+        name: t.Literal["logs", "logs.ecs", "logs.otel"],
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
@@ -92,7 +92,7 @@ class StreamsClient(NamespacedClient):
     def logs_enable(
         self,
         *,
-        name: t.Union[str, t.Literal["logs", "logs.ecs", "logs.otel"]],
+        name: t.Literal["logs", "logs.ecs", "logs.otel"],
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,

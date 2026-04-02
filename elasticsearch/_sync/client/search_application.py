@@ -275,7 +275,7 @@ class SearchApplicationClient(NamespacedClient):
         self,
         *,
         collection_name: str,
-        event_type: t.Union[str, t.Literal["page_view", "search", "search_click"]],
+        event_type: t.Literal["page_view", "search", "search_click"],
         payload: t.Optional[t.Any] = None,
         body: t.Optional[t.Any] = None,
         debug: t.Optional[bool] = None,

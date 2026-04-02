@@ -3490,9 +3490,9 @@ class MlClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3772,9 +3772,9 @@ class MlClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3989,7 +3989,7 @@ class MlClient(NamespacedClient):
         metadata: t.Optional[t.Any] = None,
         model_size_bytes: t.Optional[int] = None,
         model_type: t.Optional[
-            t.Union[str, t.Literal["lang_ident", "pytorch", "tree_ensemble"]]
+            t.Literal["lang_ident", "pytorch", "tree_ensemble"]
         ] = None,
         platform_architecture: t.Optional[str] = None,
         prefix_strings: t.Optional[t.Mapping[str, t.Any]] = None,
@@ -4659,12 +4659,12 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         number_of_allocations: t.Optional[int] = None,
         pretty: t.Optional[bool] = None,
-        priority: t.Optional[t.Union[str, t.Literal["low", "normal"]]] = None,
+        priority: t.Optional[t.Literal["low", "normal"]] = None,
         queue_capacity: t.Optional[int] = None,
         threads_per_allocation: t.Optional[int] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for: t.Optional[
-            t.Union[str, t.Literal["fully_allocated", "started", "starting"]]
+            t.Literal["fully_allocated", "started", "starting"]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -5081,9 +5081,9 @@ class MlClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,

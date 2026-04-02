@@ -56,7 +56,7 @@ class SimulateClient(NamespacedClient):
             t.Mapping[str, t.Mapping[str, t.Any]]
         ] = None,
         mapping_addition: t.Optional[t.Mapping[str, t.Any]] = None,
-        merge_type: t.Optional[t.Union[str, t.Literal["index", "template"]]] = None,
+        merge_type: t.Optional[t.Literal["index", "template"]] = None,
         pipeline: t.Optional[str] = None,
         pipeline_substitutions: t.Optional[
             t.Mapping[str, t.Mapping[str, t.Any]]

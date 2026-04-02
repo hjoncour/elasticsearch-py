@@ -37,15 +37,15 @@ class CatClient(NamespacedClient):
         *,
         name: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -84,7 +84,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -184,7 +184,7 @@ class CatClient(NamespacedClient):
         *,
         node_id: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -238,7 +238,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -334,7 +334,7 @@ class CatClient(NamespacedClient):
         *,
         circuit_breaker_patterns: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -380,7 +380,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -477,7 +477,7 @@ class CatClient(NamespacedClient):
         *,
         name: t.Optional[str] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -519,7 +519,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -619,15 +619,15 @@ class CatClient(NamespacedClient):
         *,
         index: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         format: t.Optional[str] = None,
         h: t.Optional[
             t.Union[
-                t.Sequence[t.Union[str, t.Literal["count", "epoch", "timestamp"]]],
-                t.Union[str, t.Literal["count", "epoch", "timestamp"]],
+                t.Sequence[t.Literal["count", "epoch", "timestamp"]],
+                t.Literal["count", "epoch", "timestamp"],
             ]
         ] = None,
         help: t.Optional[bool] = None,
@@ -636,7 +636,7 @@ class CatClient(NamespacedClient):
         project_routing: t.Optional[str] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
@@ -742,7 +742,7 @@ class CatClient(NamespacedClient):
         *,
         fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -750,9 +750,9 @@ class CatClient(NamespacedClient):
         h: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["field", "host", "id", "ip", "node", "size"]]
+                    t.Literal["field", "host", "id", "ip", "node", "size"]
                 ],
-                t.Union[str, t.Literal["field", "host", "id", "ip", "node", "size"]],
+                t.Literal["field", "host", "id", "ip", "node", "size"],
             ]
         ] = None,
         help: t.Optional[bool] = None,
@@ -760,7 +760,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -847,7 +847,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -903,7 +903,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         ts: t.Optional[bool] = None,
         v: t.Optional[bool] = None,
@@ -1018,15 +1018,15 @@ class CatClient(NamespacedClient):
         *,
         index: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1342,7 +1342,7 @@ class CatClient(NamespacedClient):
             ]
         ] = None,
         health: t.Optional[
-            t.Union[str, t.Literal["green", "red", "unavailable", "unknown", "yellow"]]
+            t.Literal["green", "red", "unavailable", "unknown", "yellow"]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
@@ -1352,7 +1352,7 @@ class CatClient(NamespacedClient):
         pri: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -1469,15 +1469,15 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         format: t.Optional[str] = None,
         h: t.Optional[
             t.Union[
-                t.Sequence[t.Union[str, t.Literal["host", "id", "ip", "node"]]],
-                t.Union[str, t.Literal["host", "id", "ip", "node"]],
+                t.Sequence[t.Literal["host", "id", "ip", "node"]],
+                t.Literal["host", "id", "ip", "node"],
             ]
         ] = None,
         help: t.Optional[bool] = None,
@@ -1487,7 +1487,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -1577,7 +1577,7 @@ class CatClient(NamespacedClient):
         id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1682,7 +1682,7 @@ class CatClient(NamespacedClient):
             ]
         ] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -1773,7 +1773,7 @@ class CatClient(NamespacedClient):
         datafeed_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1862,7 +1862,7 @@ class CatClient(NamespacedClient):
             ]
         ] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -1962,7 +1962,7 @@ class CatClient(NamespacedClient):
         job_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2243,7 +2243,7 @@ class CatClient(NamespacedClient):
             ]
         ] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -2344,7 +2344,7 @@ class CatClient(NamespacedClient):
         model_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2443,7 +2443,7 @@ class CatClient(NamespacedClient):
         ] = None,
         size: t.Optional[int] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -2543,7 +2543,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2573,7 +2573,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -2661,7 +2661,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2870,7 +2870,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -2960,7 +2960,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2985,7 +2985,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3073,7 +3073,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3099,7 +3099,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3192,7 +3192,7 @@ class CatClient(NamespacedClient):
         index: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         active_only: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         detailed: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
@@ -3271,7 +3271,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3367,7 +3367,7 @@ class CatClient(NamespacedClient):
         self,
         *,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3380,7 +3380,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3470,15 +3470,15 @@ class CatClient(NamespacedClient):
         allow_closed: t.Optional[bool] = None,
         allow_no_indices: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3538,7 +3538,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3665,7 +3665,7 @@ class CatClient(NamespacedClient):
         *,
         index: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3832,7 +3832,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -3923,7 +3923,7 @@ class CatClient(NamespacedClient):
         *,
         repository: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -3977,7 +3977,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -4074,7 +4074,7 @@ class CatClient(NamespacedClient):
         *,
         actions: t.Optional[t.Sequence[str]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         detailed: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
@@ -4133,7 +4133,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         v: t.Optional[bool] = None,
@@ -4237,7 +4237,7 @@ class CatClient(NamespacedClient):
         *,
         name: t.Optional[str] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -4267,7 +4267,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -4364,7 +4364,7 @@ class CatClient(NamespacedClient):
         *,
         thread_pool_patterns: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -4432,7 +4432,7 @@ class CatClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
@@ -4531,7 +4531,7 @@ class CatClient(NamespacedClient):
         transform_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
+            t.Literal["b", "gb", "kb", "mb", "pb", "tb"]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -4706,7 +4706,7 @@ class CatClient(NamespacedClient):
         ] = None,
         size: t.Optional[int] = None,
         time: t.Optional[
-            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+            t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:

@@ -920,9 +920,9 @@ class ConnectorClient(NamespacedClient):
         job_type: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["access_control", "full", "incremental"]]
+                    t.Literal["access_control", "full", "incremental"]
                 ],
-                t.Union[str, t.Literal["access_control", "full", "incremental"]],
+                t.Literal["access_control", "full", "incremental"],
             ]
         ] = None,
         pretty: t.Optional[bool] = None,
@@ -1000,11 +1000,11 @@ class ConnectorClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         job_type: t.Optional[
-            t.Union[str, t.Literal["access_control", "full", "incremental"]]
+            t.Literal["access_control", "full", "incremental"]
         ] = None,
         pretty: t.Optional[bool] = None,
         trigger_method: t.Optional[
-            t.Union[str, t.Literal["on_demand", "scheduled"]]
+            t.Literal["on_demand", "scheduled"]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:

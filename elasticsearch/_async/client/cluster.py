@@ -425,22 +425,22 @@ class ClusterClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         level: t.Optional[
-            t.Union[str, t.Literal["cluster", "indices", "shards"]]
+            t.Literal["cluster", "indices", "shards"]
         ] = None,
         local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
+            t.Union[int, t.Literal["all", "index-setting"]]
         ] = None,
         wait_for_events: t.Optional[
             t.Union[
@@ -452,7 +452,7 @@ class ClusterClient(NamespacedClient):
         wait_for_no_relocating_shards: t.Optional[bool] = None,
         wait_for_nodes: t.Optional[t.Union[int, str]] = None,
         wait_for_status: t.Optional[
-            t.Union[str, t.Literal["green", "red", "unavailable", "unknown", "yellow"]]
+            t.Literal["green", "red", "unavailable", "unknown", "yellow"]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -561,7 +561,7 @@ class ClusterClient(NamespacedClient):
                     str, t.Literal["_all", "http", "ingest", "script", "thread_pool"]
                 ]
             ],
-            t.Union[str, t.Literal["_all", "http", "ingest", "script", "thread_pool"]],
+            t.Literal["_all", "http", "ingest", "script", "thread_pool"],
         ],
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1105,9 +1105,9 @@ class ClusterClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
+                    t.Literal["all", "closed", "hidden", "none", "open"]
                 ],
-                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
+                t.Literal["all", "closed", "hidden", "none", "open"],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
