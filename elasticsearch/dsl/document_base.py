@@ -16,6 +16,7 @@
 #  under the License.
 
 import json
+import sys
 from datetime import date, datetime
 from fnmatch import fnmatch
 from typing import (
@@ -24,6 +25,7 @@ from typing import (
     Callable,
     ClassVar,
     Dict,
+    ForwardRef,
     Generic,
     List,
     Optional,
@@ -31,6 +33,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     overload,
 )
 
@@ -276,6 +279,20 @@ class InstrumentedField(InstrumentedExpression):
         return f"InstrumentedField[{self._expr}]"
 
 
+def _resolve_annotation(
+    type_: Any, globalns: Dict[str, Any], localns: Dict[str, Any], seen: set[str]
+) -> Any:
+    """Resolve strings and forward references, raising on unresolved names or cycles."""
+    while isinstance(type_, (str, ForwardRef)):
+        if isinstance(type_, ForwardRef):
+            type_ = type_.__forward_arg__
+        if type_ in seen:
+            raise TypeError(f"Circular annotation: {type_}")
+        seen.add(type_)
+        type_ = eval(type_, globalns, localns)
+    return type_
+
+
 class DocumentMeta(type):
     _doc_type: "DocumentOptions"
     _index: "IndexBase"
@@ -355,63 +372,69 @@ class DocumentOptions:
         fields = {n for n in attrs if isinstance(attrs[n], Field)}
         fields.update(annotations.keys())
         field_defaults = {}
+        module = sys.modules.get(attrs.get("__module__", ""))
+        globalns = vars(module) if module is not None else {}
+        # Preserve class aliases while fields are removed from attrs, but don't
+        # let a field named after its type shadow that type (e.g. date: date).
+        localns = {
+            key: value
+            for key, value in attrs.items()
+            if not isinstance(value, (Field, _FieldMetadataDict))
+        }
         for name in fields:
             value: Any = None
             required = None
             multi = None
+            annotation_error: Optional[Exception] = None
             if name in annotations:
                 # the field has a type annotation, so next we try to figure out
                 # what field type we can use
                 type_ = annotations[name]
-                type_metadata = []
-                if isinstance(type_, _AnnotatedAlias):
-                    type_metadata = type_.__metadata__
-                    type_ = type_.__origin__
-                skip = False
-                required = True
-                multi = False
-                while hasattr(type_, "__origin__"):
-                    if type_.__origin__ == ClassVar:
-                        skip = True
-                        break
-                    elif type_.__origin__ == Mapped:
-                        # M[type] -> extract the wrapped type
-                        type_ = type_.__args__[0]
-                    elif type_.__origin__ == Union:
-                        if len(type_.__args__) == 2 and type_.__args__[1] is type(None):
-                            # Optional[type] -> mark instance as optional
-                            required = False
-                            type_ = type_.__args__[0]
-                        else:
-                            raise TypeError("Unsupported union")
-                    elif type_.__origin__ in [list, List]:
-                        # List[type] -> mark instance as multi
-                        multi = True
-                        required = False
-                        type_ = type_.__args__[0]
-                    else:
-                        break
-                if skip or type_ == ClassVar:
-                    # skip ClassVar attributes
-                    continue
-                if type(type_) is UnionType:
-                    # a union given with the pipe syntax
-                    args = get_args(type_)
-                    if len(args) == 2 and args[1] is type(None):
-                        required = False
-                        type_ = type_.__args__[0]
-                    else:
-                        raise TypeError("Unsupported union")
+                type_metadata: List[Any] = []
                 field = None
                 field_args: List[Any] = []
                 field_kwargs: Dict[str, Any] = {}
-                if isinstance(type_, type) and issubclass(type_, InnerDoc):
-                    # object or nested field
-                    field = Nested if multi else Object
-                    field_args = [type_]
-                elif type_ in self.type_annotation_map:
-                    # use best field type for the type hint provided
-                    field, field_kwargs = self.type_annotation_map[type_]  # type: ignore[assignment]
+                seen: set[str] = set()
+                try:
+                    required = True
+                    multi = False
+                    while True:
+                        type_ = _resolve_annotation(type_, globalns, localns, seen)
+                        origin = get_origin(type_)
+                        if isinstance(type_, _AnnotatedAlias):
+                            type_metadata.extend(type_.__metadata__)
+                            type_ = type_.__origin__
+                        elif origin == Mapped:
+                            # M[type] -> extract the wrapped type
+                            type_ = get_args(type_)[0]
+                        elif origin == Union or type(type_) is UnionType:
+                            args = get_args(type_)
+                            if len(args) != 2 or args[1] is not type(None):
+                                raise TypeError("Unsupported union")
+                            required = False
+                            type_ = args[0]
+                        elif origin in (list, List):
+                            # List[type] -> mark instance as multi
+                            multi = True
+                            required = False
+                            type_ = get_args(type_)[0]
+                        else:
+                            break
+                    if origin == ClassVar or type_ == ClassVar:
+                        # skip ClassVar attributes without resolving their contents
+                        continue
+                    if isinstance(type_, type) and issubclass(type_, InnerDoc):
+                        # object or nested field
+                        field = Nested if multi else Object
+                        field_args = [type_]
+                    elif type_ in self.type_annotation_map:
+                        field, field_kwargs = self.type_annotation_map[type_]  # type: ignore[assignment]
+                except Exception as exc:
+                    # Only apply inferred settings after the entire annotation
+                    # is understood, including references inside Optional/List/M.
+                    # Evaluation or unsupported unions must not discard a Field.
+                    annotation_error = exc
+                    required = multi = None
 
                 # if this field does not have a right-hand value, we look in the metadata
                 # of the annotation to see if we find it there
@@ -454,7 +477,7 @@ class DocumentOptions:
                         value._multi = multi
 
             if value is None:
-                raise TypeError(f"Cannot map field {name}")
+                raise TypeError(f"Cannot map field {name}") from annotation_error
             if attr_es_name:
                 value._es_name = attr_es_name
             self.mapping.field(name, value)

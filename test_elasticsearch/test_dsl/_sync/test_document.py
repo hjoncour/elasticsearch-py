@@ -712,6 +712,37 @@ def test_nested_and_object_inner_doc() -> None:
     }
 
 
+def test_quoted_type_hints() -> None:
+    class Article(Document):
+        note: "Optional[str]" = field.Keyword(required=True)
+        reference: Optional["str"] = field.Keyword(required=True)
+        tags: List["str"] = field.Keyword(required=True)
+
+    assert Article().note is None
+    assert Article().reference is None
+    assert Article().tags == []
+    Article().full_clean()
+
+
+def test_quoted_unresolved_type_hints_preserve_field() -> None:
+    class Article(Document):
+        reference: Optional["Missing"] = field.Keyword(  # noqa: F821
+            required=True, multi=True
+        )
+        wrapped: M["Missing"] = mapped_field(  # noqa: F821
+            field.Keyword(required=False, multi=True)
+        )
+        tags: List["Missing"] = field.Keyword(required=True)  # noqa: F821
+
+    assert Article().reference == []
+    assert Article().wrapped == []
+    assert Article().tags is None
+    with raises(ValidationException) as exc:
+        Article().full_clean()
+    assert set(exc.value.args[0]) == {"reference", "tags"}
+    Article(reference="known", tags="known").full_clean()
+
+
 def test_doc_with_type_hints() -> None:
     class TypedInnerDoc(InnerDoc):
         st: M[str]
