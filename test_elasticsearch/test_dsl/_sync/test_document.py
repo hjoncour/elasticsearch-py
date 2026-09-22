@@ -724,7 +724,7 @@ def test_quoted_type_hints() -> None:
     Article().full_clean()
 
 
-def test_quoted_unresolved_type_hints_preserve_field() -> None:
+def test_live_wrappers_preserve_inference_with_unresolved_contents() -> None:
     class Article(Document):
         reference: Optional["Missing"] = field.Keyword(  # noqa: F821
             required=True, multi=True
@@ -733,14 +733,132 @@ def test_quoted_unresolved_type_hints_preserve_field() -> None:
             field.Keyword(required=False, multi=True)
         )
         tags: List["Missing"] = field.Keyword(required=True)  # noqa: F821
+        nested: M[List["Missing"]] = mapped_field(  # noqa: F821
+            field.Keyword(required=True)
+        )
+        nullable_tags: Optional[List["Missing"]] = field.Keyword(  # noqa: F821
+            required=True
+        )
 
-    assert Article().reference == []
-    assert Article().wrapped == []
-    assert Article().tags is None
+    assert Article().reference is None
+    assert Article().wrapped is None
+    assert Article().tags == []
+    assert Article().nested == []
+    assert Article().nullable_tags == []
     with raises(ValidationException) as exc:
         Article().full_clean()
-    assert set(exc.value.args[0]) == {"reference", "tags"}
-    Article(reference="known", tags="known").full_clean()
+    assert set(exc.value.args[0]) == {"wrapped"}
+    Article(wrapped="known").full_clean()
+
+
+class ForwardReferenceArticle(Document):
+    related: List["LaterDocument"] = Keyword()
+    parent: Optional["LaterDocument"] = Keyword(required=True)
+
+
+class LaterDocument(InnerDoc):
+    name = Keyword()
+
+
+def test_live_wrappers_reference_later_document() -> None:
+    article = ForwardReferenceArticle()
+    article.related.append("later")
+    assert article.related == ["later"]
+    article.full_clean()
+
+
+def test_live_wrapper_without_field_still_raises() -> None:
+    with raises(TypeError, match="Cannot map field related") as exc:
+
+        class Article(Document):
+            related: List["Missing"]  # noqa: F821
+
+    assert isinstance(exc.value.__cause__, NameError)
+
+
+@pytest.mark.parametrize(
+    "annotation, required, multi",
+    [
+        (Optional["str | int"], False, False),
+        (M["List"], True, False),
+        (List["str | int"], False, True),
+        (M["list[str | int]"], True, False),
+    ],
+)
+@pytest.mark.parametrize("wrapped", [False, True])
+def test_live_wrapper_with_unsupported_quoted_type(
+    annotation: Any, required: bool, multi: bool, wrapped: bool
+) -> None:
+    explicit = Keyword(required=not required, multi=not multi)
+
+    class Article(Document):
+        __annotations__ = {"value": annotation}
+        value = mapped_field(explicit) if wrapped else explicit
+
+    assert Article._doc_type.mapping["value"] is explicit
+    assert (explicit._required, explicit._multi) == (required, multi)
+    assert Article().value == ([] if multi else None)
+    if required:
+        with raises(ValidationException):
+            Article().full_clean()
+    else:
+        Article().full_clean()
+
+
+@pytest.mark.parametrize("annotation", [Optional["str | int"], M["List"]])
+def test_live_wrapper_with_unsupported_quoted_type_without_field(
+    annotation: Any,
+) -> None:
+    with raises(TypeError, match="Cannot map field value") as exc:
+
+        class Article(Document):
+            __annotations__ = {"value": annotation}
+
+    assert isinstance(exc.value.__cause__, TypeError)
+
+
+@pytest.mark.parametrize("annotation", [str | int, List[str | int]])
+def test_live_unsupported_union_with_field_raises(annotation: Any) -> None:
+    with raises(TypeError, match="Unsupported union"):
+
+        class Article(Document):
+            __annotations__ = {"tags": annotation}
+            tags = Keyword(required=False, multi=False)
+
+
+def test_live_bare_list_with_field_raises() -> None:
+    with raises(TypeError, match="field tags"):
+
+        class Article(Document):
+            tags: List = Keyword()
+
+
+def test_live_unhashable_annotation_with_field_raises() -> None:
+    with raises(TypeError):
+
+        class Article(Document):
+            __annotations__ = {"tags": []}
+            tags = Keyword()
+
+
+def test_live_excluded_unsupported_annotation() -> None:
+    class Article(Document):
+        cache: M[int | str] = mapped_field(exclude=True)
+
+    assert "cache" not in Article._doc_type.mapping
+
+
+def test_live_nullable_list_infers_multiple_values() -> None:
+    class Article(Document):
+        tags: list[str] | None
+
+    field = Article._doc_type.mapping["tags"]
+    assert (field._required, field._multi) == (False, True)
+    article = Article()
+    assert article.tags == []
+    article.tags.append("tag")
+    assert article.to_dict() == {"tags": ["tag"]}
+    article.full_clean()
 
 
 def test_doc_with_type_hints() -> None:

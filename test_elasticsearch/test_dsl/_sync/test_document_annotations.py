@@ -17,6 +17,8 @@
 
 from __future__ import annotations
 
+import subprocess
+import sys
 from datetime import date
 from typing import Annotated, ClassVar, List, Optional
 
@@ -29,6 +31,7 @@ from elasticsearch.dsl import (
     Keyword,
     M,
     Object,
+    Text,
     mapped_field,
 )
 from elasticsearch.dsl.exceptions import ValidationException
@@ -53,10 +56,12 @@ def test_resolved_required_annotation() -> None:
     "annotation",
     [
         "str | None",
+        "None | str",
         "Optional[str]",
         "M[Optional[str]]",
         '"str | None"',
         'Optional["str"]',
+        "Optional[None | str]",
     ],
 )
 def test_resolved_optional_annotations(annotation: str) -> None:
@@ -66,6 +71,46 @@ def test_resolved_optional_annotations(annotation: str) -> None:
 
     assert Article().note is None
     Article().full_clean()
+
+
+def test_none_first_optional_infers_field() -> None:
+    class Article(Document):
+        note: None | str
+
+    assert Article._doc_type.mapping.to_dict() == {
+        "properties": {"note": {"type": "text"}}
+    }
+    assert Article().note is None
+    Article().full_clean()
+    Article(note="draft").full_clean()
+
+
+@pytest.mark.parametrize("warm_cache", [False, True])
+@pytest.mark.parametrize("postponed", [False, True])
+def test_optional_union_does_not_depend_on_typing_cache(
+    warm_cache: bool, postponed: bool
+) -> None:
+    # Isolate typing's cache so other tests cannot determine the union order.
+    source = "from __future__ import annotations\n" if postponed else ""
+    source += f"""
+import sys
+from typing import Optional, Union
+from elasticsearch.dsl import {Document.__name__}, Keyword
+
+if sys.argv[1] == "warm":
+    Optional[Union[None, str]]
+
+class Article({Document.__name__}):
+    note: Optional[Optional[str]] = Keyword(required=True)
+
+Article().full_clean()
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", source, "warm" if warm_cache else "cold"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_resolved_mapped_list_annotation() -> None:
@@ -84,6 +129,103 @@ def test_resolved_annotated_field() -> None:
         "properties": {"metadata": {"type": "keyword"}}
     }
     Article().full_clean()
+
+
+@pytest.mark.parametrize(
+    "wrapper, metadata, field_type, required, multi",
+    [
+        ("M", "Keyword(required=False, multi=True)", "keyword", True, False),
+        ("List", "Keyword(required=False, multi=True)", "keyword", False, True),
+        ("Optional", '"marker"', "text", False, False),
+        pytest.param(
+            "Optional",
+            "Keyword(required=False, multi=True)",
+            "keyword",
+            False,
+            False,
+            marks=pytest.mark.skipif(
+                sys.version_info < (3, 11),
+                reason="Python 3.10 unions reject unhashable Annotated metadata",
+            ),
+        ),
+    ],
+)
+def test_nested_annotated_field(
+    wrapper: str, metadata: str, field_type: str, required: bool, multi: bool
+) -> None:
+    class Article(Document):
+        __annotations__ = {"value": f"{wrapper}[Annotated[str, {metadata}]]"}
+
+    field = Article._doc_type.mapping["value"]
+    assert field.to_dict() == {"type": field_type}
+    assert (field._required, field._multi) == (required, multi)
+    assert Article().value == ([] if multi else None)
+    if required:
+        with pytest.raises(ValidationException):
+            Article().full_clean()
+    else:
+        Article().full_clean()
+    Article(value="test").full_clean()
+
+
+@pytest.mark.parametrize(
+    "annotation",
+    [
+        "M[Annotated[str, Keyword()]]",
+        "Optional[Annotated[str, Keyword()]]",
+        "List[Annotated[str, Keyword()]]",
+        "M[Annotated[str, mapped_field(exclude=True)]]",
+    ],
+)
+@pytest.mark.parametrize("wrapped", [False, True])
+def test_explicit_field_takes_precedence_over_nested_metadata(
+    annotation: str, wrapped: bool
+) -> None:
+    explicit = Text()
+    default = ["draft"] if annotation.startswith("List[") else "draft"
+
+    class Article(Document):
+        __annotations__ = {"title": annotation}
+        title = (
+            mapped_field(explicit, default=default, es_name="title_text")
+            if wrapped
+            else explicit
+        )
+
+    assert Article._doc_type.mapping["title"] is explicit
+    assert Article._doc_type.mapping.to_dict() == {
+        "properties": {"title_text" if wrapped else "title": {"type": "text"}}
+    }
+    if wrapped:
+        assert Article().to_dict() == {"title_text": default}
+
+
+@pytest.mark.parametrize(
+    "metadata",
+    ["Keyword()", "mapped_field(Keyword(), default='metadata', es_name='ignored')"],
+)
+def test_mapped_field_options_keep_the_annotation_field(metadata: str) -> None:
+    class Article(Document):
+        __annotations__ = {"title": f"M[Annotated[str, {metadata}]]"}
+        title = mapped_field(default="draft", es_name="title_text")
+
+    assert Article._doc_type.mapping.to_dict() == {
+        "properties": {"title_text": {"type": "keyword"}}
+    }
+    assert Article().to_dict() == {"title_text": "draft"}
+
+
+def test_nullable_list_infers_multiple_values() -> None:
+    class Article(Document):
+        tags: list[str] | None
+
+    field = Article._doc_type.mapping["tags"]
+    assert (field._required, field._multi) == (False, True)
+    article = Article()
+    assert article.tags == []
+    article.tags.append("tag")
+    assert article.to_dict() == {"tags": ["tag"]}
+    article.full_clean()
 
 
 def test_resolved_classvar_annotation() -> None:
@@ -135,6 +277,16 @@ def test_unresolved_annotated_field_preserves_settings() -> None:
     assert Article._doc_type.mapping.to_dict() == {
         "properties": {"value": {"type": "keyword"}}
     }
+    assert Article().value == []
+    Article().full_clean()
+
+
+def test_unquoted_unresolved_annotated_type_preserves_explicit_field() -> None:
+    class Article(Document):
+        value: Annotated[Missing, "metadata"] = Keyword(  # noqa: F821
+            required=False, multi=True
+        )
+
     assert Article().value == []
     Article().full_clean()
 
@@ -199,6 +351,40 @@ def test_unresolved_excluded_annotation() -> None:
     assert "ignored" not in Article._doc_type.mapping
 
 
+@pytest.mark.parametrize("annotation", ["M[int | str]", "List", "1 / 0"])
+def test_excluded_annotation_is_not_evaluated(
+    annotation: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls = []
+
+    def resolve(*args: object) -> None:
+        calls.append(args)
+        raise AssertionError("Excluded annotations must not be resolved")
+
+    monkeypatch.setattr("elasticsearch.dsl.document_base._resolve_annotation", resolve)
+
+    class Article(Document):
+        __annotations__ = {"ignored": annotation}
+        ignored = mapped_field(exclude=True)
+
+    assert "ignored" not in Article._doc_type.mapping
+    assert calls == []
+
+
+@pytest.mark.parametrize(
+    "annotation",
+    [
+        "Annotated[int | str, mapped_field(exclude=True)]",
+        "M[Annotated[int | str, mapped_field(exclude=True)]]",
+    ],
+)
+def test_excluded_annotation_metadata_skips_inference(annotation: str) -> None:
+    class Article(Document):
+        __annotations__ = {"ignored": annotation}
+
+    assert "ignored" not in Article._doc_type.mapping
+
+
 def test_unresolved_annotation_preserves_mapped_field_options() -> None:
     class Article(Document):
         note: Missing = mapped_field(  # noqa: F821
@@ -259,6 +445,8 @@ def test_field_named_after_its_type(annotation: str, wrapped: bool) -> None:
     assert Event._doc_type.mapping.to_dict() == {
         "properties": {"date": {"type": "date", "format": "yyyy-MM-dd"}}
     }
+    assert Event._doc_type.mapping["date"]._required == (annotation != "Optional[date]")
+    assert Event._doc_type.mapping["date"]._multi is False
     Event(date=date(2026, 1, 2)).full_clean()
 
 
@@ -272,28 +460,61 @@ def test_field_named_after_builtin_type() -> None:
     Event(str="value").full_clean()
 
 
-@pytest.mark.parametrize("annotation", ["str | int | None", "Optional[str | int]"])
+@pytest.mark.parametrize(
+    "member_kind", ["method", "property", "classmethod", "staticmethod"]
+)
+def test_class_members_do_not_shadow_annotation_types(member_kind: str) -> None:
+    class Event(Document):
+        day: date
+
+        def date(self) -> None:
+            pass
+
+        if member_kind == "property":
+            date = property(date)
+        elif member_kind == "classmethod":
+            date = classmethod(date)
+        elif member_kind == "staticmethod":
+            date = staticmethod(date)
+
+    assert Event._doc_type.mapping.to_dict() == {
+        "properties": {"day": {"type": "date", "format": "yyyy-MM-dd"}}
+    }
+    Event(day=date(2026, 1, 2)).full_clean()
+
+
+@pytest.mark.parametrize(
+    "annotation", ["str | int", "str | int | None", "Optional[str | int]", "List"]
+)
 @pytest.mark.parametrize("wrapped", [False, True])
-def test_unsupported_union_preserves_field(annotation: str, wrapped: bool) -> None:
-    explicit = Keyword(required=False, multi=True)
+@pytest.mark.parametrize("required, multi", [(False, True), (True, False)])
+def test_unsupported_string_annotation_preserves_field(
+    annotation: str, wrapped: bool, required: bool, multi: bool
+) -> None:
+    explicit = Keyword(required=required, multi=multi)
 
     class Article(Document):
         __annotations__ = {"value": annotation}
         value = mapped_field(explicit) if wrapped else explicit
 
     assert Article._doc_type.mapping["value"] is explicit
-    assert Article().value == []
-    Article().full_clean()
+    assert (explicit._required, explicit._multi) == (required, multi)
+    assert Article().value == ([] if multi else None)
+    if required:
+        with pytest.raises(ValidationException):
+            Article().full_clean()
+    else:
+        Article().full_clean()
 
 
-def test_unsupported_union_without_field_raises() -> None:
+@pytest.mark.parametrize("annotation", ["str | int | None", "List"])
+def test_unsupported_string_annotation_without_field_raises(annotation: str) -> None:
     with pytest.raises(TypeError, match="Cannot map field value") as exc:
 
         class Article(Document):
-            value: str | int | None
+            __annotations__ = {"value": annotation}
 
     assert isinstance(exc.value.__cause__, TypeError)
-    assert str(exc.value.__cause__) == "Unsupported union"
 
 
 @pytest.mark.parametrize(
@@ -335,6 +556,7 @@ def test_future_annotations_have_same_mapping_as_plain_annotations() -> None:
             "created": date,
             "author": Author,
             "authors": List[Author],
+            "note": Optional[str],
         }
 
     class Article(Document):
@@ -342,6 +564,7 @@ def test_future_annotations_have_same_mapping_as_plain_annotations() -> None:
         created: date
         author: Author
         authors: List[Author]
+        note: Optional[str]
 
     expected = {
         "properties": {
@@ -349,7 +572,18 @@ def test_future_annotations_have_same_mapping_as_plain_annotations() -> None:
             "created": {"type": "date", "format": "yyyy-MM-dd"},
             "author": {"type": "object", "properties": {"name": {"type": "keyword"}}},
             "authors": {"type": "nested", "properties": {"name": {"type": "keyword"}}},
+            "note": {"type": "text"},
         }
     }
     assert PlainArticle._doc_type.mapping.to_dict() == expected
     assert Article._doc_type.mapping.to_dict() == expected
+    for name, settings in {
+        "text": (True, False),
+        "created": (True, False),
+        "author": (True, False),
+        "authors": (False, True),
+        "note": (False, False),
+    }.items():
+        for document in (PlainArticle, Article):
+            field = document._doc_type.mapping[name]
+            assert (field._required, field._multi) == settings

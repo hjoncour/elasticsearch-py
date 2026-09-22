@@ -19,6 +19,7 @@ import json
 import sys
 from datetime import date, datetime
 from fnmatch import fnmatch
+from types import FunctionType
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -282,7 +283,7 @@ class InstrumentedField(InstrumentedExpression):
 def _resolve_annotation(
     type_: Any, globalns: Dict[str, Any], localns: Dict[str, Any], seen: set[str]
 ) -> Any:
-    """Resolve strings and forward references, raising on unresolved names or cycles."""
+    """Resolve strings and forward references; propagate evaluation and cycle errors."""
     while isinstance(type_, (str, ForwardRef)):
         if isinstance(type_, ForwardRef):
             type_ = type_.__forward_arg__
@@ -328,6 +329,8 @@ class DocumentOptions:
         self.mapping: Mapping = getattr(meta, "mapping", Mapping())
 
         # register the document's fields, which can be given in a few formats:
+        # Annotations can also be strings, including those produced by
+        # from __future__ import annotations.
         #
         # class MyDocument(Document):
         #     # required field using native typing
@@ -357,7 +360,7 @@ class DocumentOptions:
         #     field9 = Text()
         #
         #     # ignore attributes
-        #     field10: ClassVar[string] = "a regular class variable"
+        #     field10: ClassVar[str] = "a regular class variable"
         annotations = attrs.get("__annotations__", {})
         if not annotations and annotationlib:
             # Python 3.14+ uses annotationlib
@@ -374,14 +377,29 @@ class DocumentOptions:
         field_defaults = {}
         module = sys.modules.get(attrs.get("__module__", ""))
         globalns = vars(module) if module is not None else {}
-        # Preserve class aliases while fields are removed from attrs, but don't
-        # let a field named after its type shadow that type (e.g. date: date).
+        # Class-body names take precedence over module globals, except fields
+        # and methods, which must not shadow types (e.g. date: date = Date()).
         localns = {
             key: value
             for key, value in attrs.items()
-            if not isinstance(value, (Field, _FieldMetadataDict))
+            if not isinstance(
+                value,
+                (
+                    Field,
+                    _FieldMetadataDict,
+                    FunctionType,
+                    property,
+                    classmethod,
+                    staticmethod,
+                ),
+            )
         }
         for name in fields:
+            attr_value = attrs.get(name)
+            has_explicit_field = isinstance(attr_value, (Field, _FieldMetadataDict))
+            if isinstance(attr_value, _FieldMetadataDict) and attr_value.get("exclude"):
+                # Explicitly excluded attributes need no annotation inference.
+                continue
             value: Any = None
             required = None
             multi = None
@@ -395,33 +413,70 @@ class DocumentOptions:
                 field_args: List[Any] = []
                 field_kwargs: Dict[str, Any] = {}
                 seen: set[str] = set()
-                try:
-                    required = True
-                    multi = False
-                    while True:
+                required = True
+                multi = False
+                fallback_settings: Tuple[Optional[bool], Optional[bool]] = (None, None)
+                excluded = False
+                while True:
+                    if not seen and not isinstance(annotations[name], str):
+                        # Preserve inference from live wrappers before evaluating
+                        # any quoted part, in case that part cannot be mapped.
+                        fallback_settings = (required, multi)
+                    try:
                         type_ = _resolve_annotation(type_, globalns, localns, seen)
-                        origin = get_origin(type_)
-                        if isinstance(type_, _AnnotatedAlias):
-                            type_metadata.extend(type_.__metadata__)
-                            type_ = type_.__origin__
-                        elif origin == Mapped:
-                            # M[type] -> extract the wrapped type
-                            type_ = get_args(type_)[0]
-                        elif origin == Union or type(type_) is UnionType:
-                            args = get_args(type_)
-                            if len(args) != 2 or args[1] is not type(None):
-                                raise TypeError("Unsupported union")
-                            required = False
-                            type_ = args[0]
-                        elif origin in (list, List):
-                            # List[type] -> mark instance as multi
-                            multi = True
-                            required = False
-                            type_ = get_args(type_)[0]
-                        else:
+                    except Exception as exc:
+                        annotation_error = exc
+                        # Whole-string annotations use the explicit Field as
+                        # given; live wrappers keep their pre-resolution settings.
+                        required, multi = fallback_settings
+                        break
+                    origin = get_origin(type_)
+                    if isinstance(type_, _AnnotatedAlias):
+                        type_metadata.extend(type_.__metadata__)
+                        if not has_explicit_field and any(
+                            isinstance(md, _FieldMetadataDict) and md.get("exclude")
+                            for md in type_metadata
+                        ):
+                            excluded = True
                             break
+                        type_ = type_.__origin__
+                    elif origin == Mapped:
+                        # M[type] -> extract the wrapped type
+                        type_ = get_args(type_)[0]
+                    elif origin == Union or type(type_) is UnionType:
+                        # Optional[type] accepts None in either position.
+                        args = get_args(type_)
+                        if len(args) != 2 or type(None) not in args:
+                            annotation_error = TypeError(
+                                f"Unsupported union for field {name}"
+                            )
+                            if not seen:
+                                raise annotation_error
+                            required, multi = fallback_settings
+                            break
+                        required = False
+                        type_ = next(arg for arg in args if arg is not type(None))
+                    elif origin in (list, List):
+                        args = get_args(type_)
+                        if not args:
+                            annotation_error = TypeError(
+                                f"Missing list element type for field {name}"
+                            )
+                            if not seen:
+                                raise annotation_error
+                            required, multi = fallback_settings
+                            break
+                        # List[type] -> mark instance as multi
+                        multi = True
+                        required = False
+                        type_ = args[0]
+                    else:
+                        break
+                if excluded:
+                    continue
+                if annotation_error is None:
                     if origin == ClassVar or type_ == ClassVar:
-                        # skip ClassVar attributes without resolving their contents
+                        # skip ClassVar attributes
                         continue
                     if isinstance(type_, type) and issubclass(type_, InnerDoc):
                         # object or nested field
@@ -429,18 +484,29 @@ class DocumentOptions:
                         field_args = [type_]
                     elif type_ in self.type_annotation_map:
                         field, field_kwargs = self.type_annotation_map[type_]  # type: ignore[assignment]
-                except Exception as exc:
-                    # Only apply inferred settings after the entire annotation
-                    # is understood, including references inside Optional/List/M.
-                    # Evaluation or unsupported unions must not discard a Field.
-                    annotation_error = exc
-                    required = multi = None
 
-                # if this field does not have a right-hand value, we look in the metadata
-                # of the annotation to see if we find it there
-                for md in type_metadata:
-                    if isinstance(md, (_FieldMetadataDict, Field)):
-                        attrs[name] = md
+                # Explicit DSL fields and mapped_field options take precedence
+                # over annotation metadata. Other values (e.g. Pydantic defaults)
+                # do not supply a DSL mapping, so metadata can still provide it.
+                if not has_explicit_field:
+                    for md in type_metadata:
+                        if isinstance(md, (_FieldMetadataDict, Field)):
+                            attrs[name] = md
+                elif (
+                    isinstance(attr_value, _FieldMetadataDict)
+                    and attr_value.get("_field") is None
+                ):
+                    # Right-hand options can still use a field from metadata.
+                    for md in type_metadata:
+                        metadata_field = (
+                            md.get("_field")
+                            if isinstance(md, _FieldMetadataDict)
+                            else md
+                        )
+                        if isinstance(metadata_field, Field):
+                            attrs[name] = _FieldMetadataDict(
+                                {**attr_value, "_field": metadata_field}
+                            )
 
                 if field:
                     field_kwargs = {
@@ -477,7 +543,9 @@ class DocumentOptions:
                         value._multi = multi
 
             if value is None:
-                raise TypeError(f"Cannot map field {name}") from annotation_error
+                if annotation_error is not None:
+                    raise TypeError(f"Cannot map field {name}") from annotation_error
+                raise TypeError(f"Cannot map field {name}")
             if attr_es_name:
                 value._es_name = attr_es_name
             self.mapping.field(name, value)
